@@ -1,13 +1,15 @@
 <?php
+
 namespace api;
 
 class Articles extends BaseApi
 {
-    const LOGIN = 'labsales_test';
-    const PASSWORD = '18765gR5';
     const ARTICLES_URL = 'https://test.labsales.ru/tasks/articles/rest/article/';
 
-    public function getArticleData($articleID)
+    /**
+     * @param int $articleID
+     */
+    public function getArticleData(int $articleID)
     {
         $articlesURL = $this->prepareCURL(self::ARTICLES_URL, $articleID);
         $res = json_decode(curl_exec($articlesURL));
@@ -18,6 +20,9 @@ class Articles extends BaseApi
         return $res->data;
     }
 
+    /**
+     * @param int|null $parameter
+     */
     protected function prepareCURL(string $url, int $parameter = null)
     {
         if (is_null($parameter)) {
@@ -25,7 +30,7 @@ class Articles extends BaseApi
         }
 
         $articlesCURL = curl_init($url . $parameter);
-        curl_setopt($articlesCURL, CURLOPT_USERPWD, self::LOGIN . ':' . self::PASSWORD);
+        curl_setopt($articlesCURL, CURLOPT_USERPWD, parent::LOGIN . ':' . parent::PASSWORD);
         curl_setopt($articlesCURL, CURLOPT_RETURNTRANSFER, 1);
 
         return $articlesCURL;
